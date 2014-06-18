@@ -21,8 +21,47 @@
 	
 	var app = angular.module('soccer-match', []);
 	
-	app.controller('PlayersListController', function(){
+	app.service('playerFocus', function(){
+		var subscriber = undefined;
+		
+		this.sendMessage = function(mex){
+			subscriber(mex);
+		};
+		
+		this.onMessage = function(callback){
+			subscriber = callback;
+		};
+	});
+	
+	app.controller('PlayersListController', function(playerFocus){
 		this.players = players;
+		
+		this.playerDialog = function(p){
+			playerFocus.sendMessage(p);			
+		};
+	});
+	
+	app.controller('ModalDialogController', function(playerFocus){
+		var scope = this;
+		scope.player = undefined;
+		scope.show = false;
+		
+		scope.toggleDialog = function(){
+			this.show = ! this.show;
+		};
+		
+		scope.focusPlayer = function(p) {
+			for(i in players){
+				if(players[i].id == p){
+					scope.player = players[i];
+					scope.show = true;
+				}
+			}
+				
+			console.log(scope);
+		};
+		
+		playerFocus.onMessage(scope.focusPlayer);
 	});
 	
 })();
