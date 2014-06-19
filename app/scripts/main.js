@@ -5,17 +5,35 @@
 		{
 			id: 1,
 			name: 'Charles Foley',
-			photo: 'images/gem-01.gif'
+			photo: 'images/gem-01.gif',
+			stats: {
+				attack: 5,
+				defense: 7,
+				technique: 6,
+				stamina: 9
+			}
 		},
 		{
 			id: 2,
 			name: 'Pippo',
-			photo: 'images/gem-02.gif'
+			photo: 'images/gem-02.gif',
+			stats: {
+				attack: 6,
+				defense: 10,
+				technique: 9,
+				stamina: 8
+			}
 		},
 		{
 			id: 3,
 			name: 'Roberto',
-			photo: 'images/gem-03.gif'
+			photo: 'images/gem-03.gif',
+			stats: {
+				attack: 7,
+				defense: 7,
+				technique: 10,
+				stamina: 9
+			}
 		}
 	];
 	
@@ -33,35 +51,30 @@
 		};
 	});
 	
-	app.controller('PlayersListController', function(playerFocus){
-		this.players = players;
+	app.controller('PlayersListController', ['$scope', 'playerFocus', function($scope, playerFocus){
+		$scope.players = players;
 		
-		this.playerDialog = function(p){
+		$scope.playerDialog = function(p){
 			playerFocus.sendMessage(p);			
 		};
-	});
+	}]);
 	
-	app.controller('ModalDialogController', function(playerFocus){
-		var scope = this;
-		scope.player = undefined;
-		scope.show = false;
+	app.controller('ModalDialogController', ['$scope', 'playerFocus', function($scope, playerFocus){
+
+		$scope.player = undefined;
+		$scope.show = false;
 		
-		scope.toggleDialog = function(){
-			this.show = ! this.show;
-		};
-		
-		scope.focusPlayer = function(p) {
+		$scope.focusPlayer = function(p) {
 			for(i in players){
 				if(players[i].id == p){
-					scope.player = players[i];
-					scope.show = true;
+					$scope.player = players[i];
+					$scope.show = true;
 				}
 			}
-				
-			console.log(scope);
+			console.log($scope.player.stats);
 		};
 		
-		playerFocus.onMessage(scope.focusPlayer);
-	});
+		playerFocus.onMessage($scope.focusPlayer);
+	}]);
 	
 })();

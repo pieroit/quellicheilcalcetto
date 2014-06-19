@@ -31,18 +31,47 @@
         		</div>
         		<!-- send invitation -->
         		<div id="match-invitation"></div>
+        	
+        	
+        		<!-- player modal dialog -->
+        		<div ng-controller="ModalDialogController"  ng-show="show" id="modal-wrapper">
+        			<div id="modal-dialog">
+    					
+    					<div id="dialog-player-thumb">
+    						<img class="player-thumb" ng-src="{{player.photo}}">
+    					</div>
+    					<div id="dialog-player-info">
+    						<h1>{{player.name}}</h1>
+    					</div>
+    					
+    					<div id="dialog-player-stats">
+    						D3 svg here
+    					</div>
+    					<div id="dialog-player-stats-labels">
+    						<p ng-repeat="(label, stat) in player.stats">
+    							{{label}}
+    						</p>
+    					</div>
+    					
+    					<div id="dialog-ok-cancel">
+    						<button ng-click="" type="button" class="btn btn-success">Ok</button>
+							<button ng-click="" type="button" class="btn btn-default">Esci</button>
+    					</div>
+        			</div>
+        		</div>
+        	
         	</div>
         	
         	<!-- players list -->
-        	<div id="players-list" ng-controller="PlayersListController as playersListCtrl">
-        		<div ng-repeat="player in playersListCtrl.players">
+        	<div id="players-list" ng-controller="PlayersListController">
+        		<div ng-repeat="player in players">
         			
         			<!-- player -->
         			<div class="player">	
         				<img class="player-thumb" ng-src="{{player.photo}}"}}>
         				<div class="player-info">
         					<p>{{player.name}}</p>
-        					<button ng-click="playersListCtrl.playerDialog(player.id)" type="button" class="btn btn-default player-info-btn">Info</button>
+        					<button ng-click="playerDialog(player.id)" type="button" class="btn btn-default player-info-btn">Info</button>
         				</div>
         			</div>
         			
@@ -59,13 +88,6 @@
         		     		
         	</div>
         
-        </div>
-        
-        <!-- player modal dialog -->
-        <div ng-controller="ModalDialogController as dialog">
-        	<div class="modal-dialog" ng-show="{{dialog.show}}">
-        		{{dialog.player}}{{dialog.show}}
-        	</div>
         </div>
         
         <script src="../bower_components/jquery/dist/jquery.js"></script>
