@@ -1,41 +1,8 @@
 (function(){
-	console.log('\'Allo \'Allo!');
 	
-	var players = [
-		{
-			id: 1,
-			name: 'Charles Foley',
-			photo: 'images/gem-01.gif',
-			stats: {
-				attack: 5,
-				defense: 7,
-				technique: 6,
-				stamina: 9
-			}
-		},
-		{
-			id: 2,
-			name: 'Pippo',
-			photo: 'images/gem-02.gif',
-			stats: {
-				attack: 6,
-				defense: 10,
-				technique: 9,
-				stamina: 8
-			}
-		},
-		{
-			id: 3,
-			name: 'Roberto',
-			photo: 'images/gem-03.gif',
-			stats: {
-				attack: 7,
-				defense: 7,
-				technique: 10,
-				stamina: 9
-			}
-		}
-	];
+	// Global variables
+	var apiURL = 'http://localhost/quellicheilcalcetto/api/';
+	var players;
 	
 	var app = angular.module('soccer-match', []);
 	
@@ -51,29 +18,90 @@
 		};
 	});
 	
-	app.controller('PlayersListController', ['$scope', 'playerFocus', function($scope, playerFocus){
-		$scope.players = players;
+	app.controller('PlayersListController', ['$http', '$scope', 'playerFocus', function($http, $scope, playerFocus){
 		
+		$http.get( apiURL + 'players' )
+			.success(function(data, status){
+				console.log(status, 'Players: ', data);
+				players = data;
+				$scope.players = players;
+			})
+			.error(function(data, status){
+				console.log(status, data);
+			});
+			
+		$scope.playerDialog = function(p){
+			playerFocus.sendMessage(p);			
+		};
+			
 		$scope.playerDialog = function(p){
 			playerFocus.sendMessage(p);			
 		};
 	}]);
 	
 	app.controller('ModalDialogController', ['$scope', 'playerFocus', function($scope, playerFocus){
-
-		$scope.player = undefined;
-		$scope.show = false;
 		
-		$scope.focusPlayer = function(p) {
-			for(i in players){
-				if(players[i].id == p){
-					$scope.player = players[i];
-					$scope.show = true;
-				}
-			}
-			console.log($scope.player.stats);
+		// Used to hide dialog and init $scope
+		$scope.hide = function() {
+			$scope.player = undefined;
+			$scope.show = false;
 		};
 		
+		// Init !!!
+		$scope.hide();
+		
+		// Delete player
+		$scope.removeAndHide = function() {
+			for(i in players) {
+				if(players[i].player_id == $scope.player.player_id) {
+					players.splice( i, 1 );
+				}
+			}
+			$scope.hide();
+		};
+		
+		// Save player
+		$scope.saveAndHide = function() {
+			// Player data validation
+			
+			// Add player or modify him
+			if( $scope.player.player_id === undefined ) {
+				// Assign id
+				console.log('improove id assign');
+				$scope.player.player_id = Math.floor( Math.random()*10000 );
+				players.push( $scope.player );
+			} else {
+				// Modify
+				for(i in players){
+					if(players[i].player_id == $scope.player.player_id){
+						players[i] = angular.copy($scope.player);
+					}
+				}
+			}
+			
+			// Hide dialog
+			$scope.hide();
+		};
+		
+		// Select player
+		$scope.focusPlayer = function(id) {
+			if( id === undefined ) {
+				// Create new
+				$scope.player = {};
+			}
+			else {
+				// Retrieve			
+				for(i in players){
+					console.log(i);
+					if(players[i].player_id == id){
+						$scope.player = angular.copy( players[i] );
+					}
+				}
+			}
+						
+			// Show dialog
+			$scope.show = true;				
+		};
 		playerFocus.onMessage($scope.focusPlayer);
 	}]);
 	

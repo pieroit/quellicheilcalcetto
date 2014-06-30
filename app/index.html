@@ -11,10 +11,7 @@
         <link rel="stylesheet" href="styles/main.css">
     </head>
     <body ng-app="soccer-match">
-        <!--[if lt IE 10]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-
+        
         <!-- wrapper -->
         <div id="container">
         	
@@ -41,7 +38,10 @@
     						<img class="player-thumb" ng-src="{{player.photo}}">
     					</div>
     					<div id="dialog-player-info">
-    						<h1>{{player.name}}</h1>
+    						<h1>
+    							<div ng-show="!editing" ng-click="editing=true">{{player.name}}</div>
+    							<input ng-show="editing" ng-model="player.name" placeholder="{{player.name}}" />
+    						</h1>
     					</div>
     					
     					<div id="dialog-player-stats">
@@ -54,35 +54,36 @@
     					</div>
     					
     					<div id="dialog-ok-cancel">
-    						<button ng-click="" type="button" class="btn btn-success">Ok</button>
-							<button ng-click="" type="button" class="btn btn-default">Esci</button>
+    						<button ng-show="player.name" ng-click="saveAndHide()" type="button" class="btn btn-success">Ok</button>
+							<button ng-click="hide()" type="button" class="btn btn-default">Annulla</button>
+							<button ng-click="removeAndHide()" type="button" class="btn btn-danger">Rimuovi</button>
     					</div>
         			</div>
         		</div>
         	
         	</div>
         	
+        	
         	<!-- players list -->
         	<div id="players-list" ng-controller="PlayersListController">
-        		<div ng-repeat="player in players">
-        			
-        			<!-- player -->
-        			<div class="player">	
-        				<img class="player-thumb" ng-src="{{player.photo}}"}}>
-        				<div class="player-info">
-        					<p>{{player.name}}</p>
-        					<button ng-click="playerDialog(player.id)" type="button" class="btn btn-default player-info-btn">Info</button>
-        				</div>
-        			</div>
-        			
-        		</div>
         		
         		<!-- add player -->
         		<div class="player">	
         			<img class="player-thumb" src="images/default.png"}}>
         			<div class="player-info">
         				<p>- ??? -</p>
-        				<button type="button" class="btn btn-success player-info-btn">Nuovo Giocatore</button>
+        				<button ng-click="playerDialog()" type="button" class="btn btn-success player-info-btn">Nuovo Giocatore</button>
+        			</div>
+        		</div>
+        		
+        		<div ng-repeat="player in players">	
+        			<!-- player -->
+        			<div class="player">	
+        				<img class="player-thumb" ng-src="{{player.photo}}"}}>
+        				<div class="player-info">
+        					<p>{{player.name}}</p>
+        					<button ng-click="playerDialog(player.player_id)" type="button" class="btn btn-default player-info-btn">Info</button>
+        				</div>
         			</div>
         		</div>
         		     		
@@ -90,7 +91,7 @@
         
         </div>
         
-        <script src="../bower_components/jquery/dist/jquery.js"></script>
+        <!--<script src="../bower_components/jquery/dist/jquery.js"></script>-->
         <script src="../bower_components/angular/angular.min.js"></script>
         
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -103,7 +104,7 @@
             ga('create','UA-XXXXX-X');ga('send','pageview');
         </script>
 
-        <!-- build:js scripts/plugins.js -->
+        <!-- build:js scripts/plugins.js
         <script src="../bower_components/bootstrap/js/affix.js"></script>
         <script src="../bower_components/bootstrap/js/alert.js"></script>
         <script src="../bower_components/bootstrap/js/dropdown.js"></script>
@@ -116,7 +117,7 @@
         <script src="../bower_components/bootstrap/js/scrollspy.js"></script>
         <script src="../bower_components/bootstrap/js/collapse.js"></script>
         <script src="../bower_components/bootstrap/js/tab.js"></script>
-        <!-- endbuild -->
+        endbuild -->
 
         <script src="scripts/main.js"></script>
 	</body>
