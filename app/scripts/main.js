@@ -4,7 +4,10 @@
 	var apiURL = 'http://localhost/quellicheilcalcetto/api/';
 	var players;
 	
-	var app = angular.module('soccer-match', []);
+	var appDependencies = [
+		'draggableModule'
+	];
+	var app = angular.module('soccer-match', appDependencies);
 	
 	app.service('playerFocus', function(){
 		var subscriber = undefined;
@@ -17,6 +20,13 @@
 			subscriber = callback;
 		};
 	});
+	
+	app.controller('FieldController', ['$scope', function($scope){
+
+		// HERE I HAVE TO MANAGE ANOTHER LIST OF PLAYERS... ?
+		// OR MAYBE USE ONLY ONE NG-REPEAT WITH CSS VARIABLES
+		
+	}]);
 	
 	app.controller('PlayersListController', ['$http', '$scope', 'playerFocus', function($http, $scope, playerFocus){
 		

@@ -18,8 +18,8 @@
         	<!-- match builder -->
         	<div id="match-builder">
         		<!-- soccer filed -->
-        		<div id="match-soccer-field">
-        			<div class="teamA"></div>
+        		<div ng-controller="FieldController" id="match-soccer-field" >
+        			<div class="teamA" droptarget="yesss" ></div>
         			<div class="teamB"></div>
         		</div>
         		<!-- stats -->
@@ -69,7 +69,7 @@
         		
         		<!-- add player -->
         		<div class="player">	
-        			<img class="player-thumb" src="images/default.png"}}>
+        			<img class="player-thumb" src="images/default.png" />
         			<div class="player-info">
         				<p>- ??? -</p>
         				<button ng-click="playerDialog()" type="button" class="btn btn-success player-info-btn">Nuovo Giocatore</button>
@@ -79,7 +79,7 @@
         		<div ng-repeat="player in players">	
         			<!-- player -->
         			<div class="player">	
-        				<img class="player-thumb" ng-src="{{player.photo}}"}}>
+        				<img class="player-thumb" ng-src="{{player.photo}}" draggable />
         				<div class="player-info">
         					<p>{{player.name}}</p>
         					<button ng-click="playerDialog(player.player_id)" type="button" class="btn btn-default player-info-btn">Info</button>
@@ -91,19 +91,6 @@
         
         </div>
         
-        <!--<script src="../bower_components/jquery/dist/jquery.js"></script>-->
-        <script src="../bower_components/angular/angular.min.js"></script>
-        
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X');ga('send','pageview');
-        </script>
-
         <!-- build:js scripts/plugins.js
         <script src="../bower_components/bootstrap/js/affix.js"></script>
         <script src="../bower_components/bootstrap/js/alert.js"></script>
@@ -119,6 +106,10 @@
         <script src="../bower_components/bootstrap/js/tab.js"></script>
         endbuild -->
 
+		<script src="../bower_components/jquery/dist/jquery.js"></script>
+        <script src="../bower_components/angular/angular.min.js"></script>
+        
+        <script src="scripts/draggable.js"></script>
         <script src="scripts/main.js"></script>
 	</body>
 </html>
