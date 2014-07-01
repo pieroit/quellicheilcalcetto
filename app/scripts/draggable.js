@@ -55,21 +55,44 @@
 					
 					var underEl = document.elementFromPoint($event.clientX, $event.clientY);
 					underEl = angular.element(underEl);
-					var callback = underEl.attr('droptarget');
 					
 					// Re-display dragged element
 					elm.css('display', 'block');
-					
-					if( callback === undefined ) {					
-						elm.css('position', startCss.position);
-						elm.css('top', startCss.top);
-						elm.css('left', startCss.left);
-						elm.removeClass('dragged');
-					} else {
-						// Do nothing, just leave the dragged element there!
-					}
+					elm.css('position', startCss.position);
+					elm.css('top', startCss.top);
+					elm.css('left', startCss.left);
 		        }	
 			}
 		};
 	}]);
+	
+	module.directive('droptarget', ['$document', function($document){
+		return {
+			restrict: 'A',
+			link: function(scope, elm, attr){
+				
+				var targetEl;
+				
+				$document.on('mousemove', function($event){
+					var overEl = document.elementFromPoint($event.clientX, $event.clientY);
+					overEl = angular.element(overEl);
+					overEl.css('display', 'none');
+					
+					var downEl = document.elementFromPoint($event.clientX, $event.clientY);
+					targetEl = angular.element(downEl);
+					
+					overEl.css('display', 'block');
+				});
+				
+				$document.on('mouseup', function($event){
+					var droppedEl = document.elementFromPoint($event.clientX, $event.clientY);
+					droppedEl = angular.element(droppedEl);
+					
+					// Notify the scope about the drop details
+					scope.drop( $event.clientX, $event.clientY, droppedEl, targetEl);
+				});
+			}
+		};
+	}]);
+	
 })();

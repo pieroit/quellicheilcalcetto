@@ -13,14 +13,26 @@
     <body ng-app="soccer-match">
         
         <!-- wrapper -->
-        <div id="container">
+        <div ng-controller="MainController" id="container" >
         	
         	<!-- match builder -->
         	<div id="match-builder">
         		<!-- soccer filed -->
         		<div ng-controller="FieldController" id="match-soccer-field" >
-        			<div class="teamA" droptarget="yesss" ></div>
-        			<div class="teamB"></div>
+        			<div class="teamA" droptarget >
+        				<img draggable ng-repeat="player in players"
+        					ng-show="isTeamA(player.player_id)"
+        					ng-src="{{player.photo}}"
+        					data-player-id="{{player.player_id}}"
+        					class="player-thumb dragged">
+        			</div>
+        			<div class="teamB" droptarget >
+        				<img draggable ng-repeat="player in players"
+        					ng-show="isTeamB(player.player_id)"
+        					ng-src="{{player.photo}}"
+        					data-player-id="{{player.player_id}}"
+        					class="player-thumb dragged">
+        			</div>
         		</div>
         		<!-- stats -->
         		<div id="match-stats">
@@ -78,8 +90,8 @@
         		
         		<div ng-repeat="player in players">	
         			<!-- player -->
-        			<div class="player">	
-        				<img class="player-thumb" ng-src="{{player.photo}}" draggable />
+        			<div class="player" ng-hide="hasTeam(player.player_id)" >	
+        				<img class="player-thumb" ng-src="{{player.photo}}" draggable data-player-id="{{player.player_id}}" />
         				<div class="player-info">
         					<p>{{player.name}}</p>
         					<button ng-click="playerDialog(player.player_id)" type="button" class="btn btn-default player-info-btn">Info</button>
